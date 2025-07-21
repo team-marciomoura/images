@@ -138,8 +138,6 @@ ENV UV_PROJECT_ENVIRONMENT=/home/${USER}/.venv
 RUN mkdir -p ${CCACHE_DIR} ${UV_CACHE_DIR} ${VIRTUAL_ENV} ${UV_PROJECT_ENVIRONMENT}
 
 WORKDIR /tmp
-COPY uv.lock pyproject.toml ./
-RUN uv sync
 
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 
