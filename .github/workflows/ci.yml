@@ -6,7 +6,7 @@ on:
 
 env:
   DOCKER_REGISTRY: idelchi
-  PLATFORMS: linux/amd64,linux/arm64
+  PLATFORMS: linux/amd64
   IMAGE: yeet
   TAG: build
 
