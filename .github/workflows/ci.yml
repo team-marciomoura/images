@@ -7,7 +7,7 @@ on:
 env:
   DOCKER_REGISTRY: idelchi
   PLATFORMS: linux/amd64,linux/arm64
-  IMAGE: "{{ env.DOCKER_REGISTRY }}/yeet"
+  IMAGE: "yeet"
 
 jobs:
   build:
@@ -22,17 +22,17 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ${{ env.IMAGE }}
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE }}
           flavor: |
             latest=false
           tags: ${{ matrix.tag }}
 
       - name: info
         run: |
-          echo "Building image '${{ env.IMAGE }}'"
+          echo "Building image '${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE }}'"
           echo "tags:"
           echo "${{ steps.meta.outputs.tags }}" | while read -r tag; do
-            echo "  - ${tag#${{ env.IMAGE }}:}"
+            echo "  - ${tag#${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE }}:}"
           done
 
       - uses: docker/setup-qemu-action@v3
