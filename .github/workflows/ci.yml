@@ -7,7 +7,7 @@ on:
 env:
   DOCKER_REGISTRY: idelchi
   PLATFORMS: linux/amd64,linux/arm64
-  IMAGE: yeet
+  IMAGE: "{{ env.DOCKER_REGISTRY }}/yeet"
 
 jobs:
   build:
