@@ -8,10 +8,15 @@ env:
   DOCKER_REGISTRY: idelchi
   PLATFORMS: linux/amd64,linux/arm64
   IMAGE: yeet
-  TAG: build
 
 jobs:
   build:
+    # Matrix over TAG instead and have build and devenv for now
+    strategy:
+      matrix:
+        tag:
+          - build
+          - devenv
     runs-on: ubuntu-24.04
     steps:
       - uses: docker/metadata-action@v5
@@ -20,7 +25,7 @@ jobs:
           images: ${{ env.IMAGE }}
           flavor: |
             latest=false
-          tags: ${{ env.TAG }}
+          tags: ${{ matrix.tag }}
 
       - name: info
         run: |
@@ -29,8 +34,6 @@ jobs:
           echo "${{ steps.meta.outputs.tags }}" | while read -r tag; do
             echo "  - ${tag#${{ env.IMAGE }}:}"
           done
-          echo "args:"
-          echo "  - ${{ inputs.args }}"
 
       - uses: docker/setup-qemu-action@v3
         with:
@@ -45,8 +48,8 @@ jobs:
 
       - uses: docker/build-push-action@v6
         with:
-          file: Dockerfile.build
-          platforms: ${{ inputs.platforms }}
+          file: Dockerfile.${{ matrix.tag }}
+          platforms: ${{ env.PLATFORMS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
