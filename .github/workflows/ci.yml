@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  dns:
+    runs-on: k8s
+    container:
+      image: curlimages/curl:latest
+    steps:
+      - name: Test DNS
+        run: |
+          curl info.garfield-labs.com -L
+
+  registry:
+    runs-on: k8s
+    container:
+      image: docker.garfield-labs.com/tools/crypto:latest
+    steps:
+      - name: Test Crypto
+        run: |
+          ls /app
